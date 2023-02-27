@@ -1,0 +1,55 @@
+<script>
+  import Cell from "./sudoku-cell.svelte";
+  import { writable,get } from "svelte/store";
+  const sudokuData = writable({})
+
+  $: promise = handleChange()
+  $: data = $sudokuData.puzzle
+
+
+  const handleChange = async (e) =>{
+    if(e != null)
+    {
+      const response = await e.target.files[0];
+      const data = await response.text().then((data) => {
+      test(JSON.parse(data))
+        
+      return new Promise(function(resolve){
+        setTimeout(() =>{
+                resolve();
+        },1000);
+          });
+      });
+    }
+  }
+  const test = (json) =>{
+    sudokuData.set(json)
+    
+    console.log(get(sudokuData));
+    // data = data.split("")
+    setTimeout(() =>{
+      data = Array(String(get(sudokuData)).split(""))
+    },100);
+  } 
+
+</script>
+
+<input type="file" id="sudokuFile" accept=".json"  on:change={handleChange}>
+
+{#await promise}
+  <p>coś poszło nie tak...</p>
+{:then _} 
+  <div class="sudoku-container">
+    {#each data as cell}
+      {#if cell == "-"} 
+        <Cell text=" "/>
+      {:else}
+      <Cell text={cell} />
+      {/if}
+    {:else}
+      <p>Nie ma danych do wyświelenia</p>
+    {/each}
+  </div> 
+{/await}
+
+

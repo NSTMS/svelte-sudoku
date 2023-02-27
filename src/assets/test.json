@@ -1,0 +1,10 @@
+{
+    "test1":{
+        "name":"siema",
+        "content":"dane testowe"
+    },
+    "test2":{
+        "name":"inne",
+        "content":"inne dane testowe"
+    }
+}
